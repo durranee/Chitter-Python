@@ -11,7 +11,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_database(self):
         tester = os.path.exists("pythonchitter.db")
-        self.assertTrue=(tester)
+        self.assertTrue(tester)
 
 if __name__ == '__main__':
     unittest.main()

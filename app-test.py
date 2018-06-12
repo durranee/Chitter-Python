@@ -13,5 +13,27 @@ class BasicTestCase(unittest.TestCase):
         tester = os.path.exists("pythonchitter.db")
         self.assertTrue=(tester)
 
+class PythonChitterTestCase(unittest.TestCase):
+
+    def setUp(self):
+        """Set up a blank temp database before each test."""
+        self.db_fd, app.app.config['DATABASE'] = tempfile.mkstemp()
+        app.app.config['TESTING'] = True
+        self.app = app.app.test_client()
+        app.init_db()
+
+    def tearDown(self):
+        """Destroy blank temp database after each test."""
+        os.close(self.db_fd)
+        os.unlink(app.app.config['DATABASE'])
+
+    def login(self, username, password):
+        """Login helper function."""
+        return self.app.post('/login', data=dict(username=username, password=password), follow_redirects=True)
+
+    def logout(self):
+        """Logout helper function."""
+        return self.app.get('/logout', follow_redirects=True)
+
 if __name__ == '__main__':
     unittest.main()
